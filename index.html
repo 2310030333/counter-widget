@@ -65,19 +65,28 @@
         </div>
     </div>
     <script>
-        let leetcodeCurrent = 0, reasoningCurrent = 0;
         const leetcodeGoal = 200, reasoningGoal = 200;
-        
+
+        function loadCounts() {
+            let leetcodeCurrent = localStorage.getItem('leetcode-count') || 0;
+            let reasoningCurrent = localStorage.getItem('reasoning-count') || 0;
+
+            document.getElementById('leetcode-count').textContent = `${leetcodeCurrent}/${leetcodeGoal}`;
+            document.getElementById('reasoning-count').textContent = `${reasoningCurrent}/${reasoningGoal}`;
+        }
+
         function increment(type) {
-            if (type === 'leetcode' && leetcodeCurrent < leetcodeGoal) {
-                leetcodeCurrent++;
-                document.getElementById('leetcode-count').textContent = `${leetcodeCurrent}/${leetcodeGoal}`;
-            }
-            if (type === 'reasoning' && reasoningCurrent < reasoningGoal) {
-                reasoningCurrent++;
-                document.getElementById('reasoning-count').textContent = `${reasoningCurrent}/${reasoningGoal}`;
+            let count = localStorage.getItem(`${type}-count`) || 0;
+            count = parseInt(count);
+
+            if (count < (type === 'leetcode' ? leetcodeGoal : reasoningGoal)) {
+                count++;
+                localStorage.setItem(`${type}-count`, count);
+                document.getElementById(`${type}-count`).textContent = `${count}/${type === 'leetcode' ? leetcodeGoal : reasoningGoal}`;
             }
         }
+
+        loadCounts();
     </script>
 </body>
 </html>
